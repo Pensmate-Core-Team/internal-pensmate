@@ -1,0 +1,547 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-18T13:40:08.796606+00:00",
+  "title": "Design System: Pensmate",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Primary",
+        "canonical": "#246344",
+        "tonalRamp": [
+          "oklch(15% 0.08272 158.82)",
+          "oklch(26% 0.08272 158.82)",
+          "oklch(38% 0.08272 158.82)",
+          "oklch(49% 0.08272 158.82)",
+          "oklch(61% 0.08272 158.82)",
+          "oklch(72% 0.08272 158.82)",
+          "oklch(84% 0.08272 158.82)",
+          "oklch(95% 0.08272 158.82)"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Primary Hover",
+        "canonical": "#194b32",
+        "tonalRamp": [
+          "oklch(15% 0.06917 158.37)",
+          "oklch(26% 0.06917 158.37)",
+          "oklch(38% 0.06917 158.37)",
+          "oklch(49% 0.06917 158.37)",
+          "oklch(61% 0.06917 158.37)",
+          "oklch(72% 0.06917 158.37)",
+          "oklch(84% 0.06917 158.37)",
+          "oklch(95% 0.06917 158.37)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f8f7f4",
+        "tonalRamp": [
+          "oklch(15% 0.00412 91.45)",
+          "oklch(26% 0.00412 91.45)",
+          "oklch(38% 0.00412 91.45)",
+          "oklch(49% 0.00412 91.45)",
+          "oklch(61% 0.00412 91.45)",
+          "oklch(72% 0.00412 91.45)",
+          "oklch(84% 0.00412 91.45)",
+          "oklch(95% 0.00412 91.45)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#202a24",
+        "tonalRamp": [
+          "oklch(15% 0.01778 158.64)",
+          "oklch(26% 0.01778 158.64)",
+          "oklch(38% 0.01778 158.64)",
+          "oklch(49% 0.01778 158.64)",
+          "oklch(61% 0.01778 158.64)",
+          "oklch(72% 0.01778 158.64)",
+          "oklch(84% 0.01778 158.64)",
+          "oklch(95% 0.01778 158.64)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "#647067",
+        "tonalRamp": [
+          "oklch(15% 0.02007 153.22)",
+          "oklch(26% 0.02007 153.22)",
+          "oklch(38% 0.02007 153.22)",
+          "oklch(49% 0.02007 153.22)",
+          "oklch(61% 0.02007 153.22)",
+          "oklch(72% 0.02007 153.22)",
+          "oklch(84% 0.02007 153.22)",
+          "oklch(95% 0.02007 153.22)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "#dfe4dd",
+        "tonalRamp": [
+          "oklch(15% 0.01079 136.56)",
+          "oklch(26% 0.01079 136.56)",
+          "oklch(38% 0.01079 136.56)",
+          "oklch(49% 0.01079 136.56)",
+          "oklch(61% 0.01079 136.56)",
+          "oklch(72% 0.01079 136.56)",
+          "oklch(84% 0.01079 136.56)",
+          "oklch(95% 0.01079 136.56)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.00000 89.88)",
+          "oklch(26% 0.00000 89.88)",
+          "oklch(38% 0.00000 89.88)",
+          "oklch(49% 0.00000 89.88)",
+          "oklch(61% 0.00000 89.88)",
+          "oklch(72% 0.00000 89.88)",
+          "oklch(84% 0.00000 89.88)",
+          "oklch(95% 0.00000 89.88)"
+        ]
+      },
+      "sidebar": {
+        "role": "neutral",
+        "displayName": "Sidebar",
+        "canonical": "#f0f2eb",
+        "tonalRamp": [
+          "oklch(15% 0.00950 119.58)",
+          "oklch(26% 0.00950 119.58)",
+          "oklch(38% 0.00950 119.58)",
+          "oklch(49% 0.00950 119.58)",
+          "oklch(61% 0.00950 119.58)",
+          "oklch(72% 0.00950 119.58)",
+          "oklch(84% 0.00950 119.58)",
+          "oklch(95% 0.00950 119.58)"
+        ]
+      },
+      "topbar": {
+        "role": "neutral",
+        "displayName": "Topbar",
+        "canonical": "#fcfcf9",
+        "tonalRamp": [
+          "oklch(15% 0.00395 106.47)",
+          "oklch(26% 0.00395 106.47)",
+          "oklch(38% 0.00395 106.47)",
+          "oklch(49% 0.00395 106.47)",
+          "oklch(61% 0.00395 106.47)",
+          "oklch(72% 0.00395 106.47)",
+          "oklch(84% 0.00395 106.47)",
+          "oklch(95% 0.00395 106.47)"
+        ]
+      },
+      "nav-active": {
+        "role": "semantic",
+        "displayName": "Nav Active",
+        "canonical": "#dce8d3",
+        "tonalRamp": [
+          "oklch(15% 0.03082 131.56)",
+          "oklch(26% 0.03082 131.56)",
+          "oklch(38% 0.03082 131.56)",
+          "oklch(49% 0.03082 131.56)",
+          "oklch(61% 0.03082 131.56)",
+          "oklch(72% 0.03082 131.56)",
+          "oklch(84% 0.03082 131.56)",
+          "oklch(95% 0.03082 131.56)"
+        ]
+      },
+      "nav-active-text": {
+        "role": "semantic",
+        "displayName": "Nav Active Text",
+        "canonical": "#224e31",
+        "tonalRamp": [
+          "oklch(15% 0.06982 152.87)",
+          "oklch(26% 0.06982 152.87)",
+          "oklch(38% 0.06982 152.87)",
+          "oklch(49% 0.06982 152.87)",
+          "oklch(61% 0.06982 152.87)",
+          "oklch(72% 0.06982 152.87)",
+          "oklch(84% 0.06982 152.87)",
+          "oklch(95% 0.06982 152.87)"
+        ]
+      },
+      "summary": {
+        "role": "semantic",
+        "displayName": "Summary",
+        "canonical": "#e8eee1",
+        "tonalRamp": [
+          "oklch(15% 0.01840 127.15)",
+          "oklch(26% 0.01840 127.15)",
+          "oklch(38% 0.01840 127.15)",
+          "oklch(49% 0.01840 127.15)",
+          "oklch(61% 0.01840 127.15)",
+          "oklch(72% 0.01840 127.15)",
+          "oklch(84% 0.01840 127.15)",
+          "oklch(95% 0.01840 127.15)"
+        ]
+      },
+      "field-border": {
+        "role": "neutral",
+        "displayName": "Field Border",
+        "canonical": "#cbd2c9",
+        "tonalRamp": [
+          "oklch(15% 0.01442 138.71)",
+          "oklch(26% 0.01442 138.71)",
+          "oklch(38% 0.01442 138.71)",
+          "oklch(49% 0.01442 138.71)",
+          "oklch(61% 0.01442 138.71)",
+          "oklch(72% 0.01442 138.71)",
+          "oklch(84% 0.01442 138.71)",
+          "oklch(95% 0.01442 138.71)"
+        ]
+      },
+      "draft-bg": {
+        "role": "semantic",
+        "displayName": "Draft Bg",
+        "canonical": "#eef0eb",
+        "tonalRamp": [
+          "oklch(15% 0.00696 124.45)",
+          "oklch(26% 0.00696 124.45)",
+          "oklch(38% 0.00696 124.45)",
+          "oklch(49% 0.00696 124.45)",
+          "oklch(61% 0.00696 124.45)",
+          "oklch(72% 0.00696 124.45)",
+          "oklch(84% 0.00696 124.45)",
+          "oklch(95% 0.00696 124.45)"
+        ]
+      },
+      "draft-text": {
+        "role": "semantic",
+        "displayName": "Draft Text",
+        "canonical": "#586355",
+        "tonalRamp": [
+          "oklch(15% 0.02582 138.99)",
+          "oklch(26% 0.02582 138.99)",
+          "oklch(38% 0.02582 138.99)",
+          "oklch(49% 0.02582 138.99)",
+          "oklch(61% 0.02582 138.99)",
+          "oklch(72% 0.02582 138.99)",
+          "oklch(84% 0.02582 138.99)",
+          "oklch(95% 0.02582 138.99)"
+        ]
+      },
+      "review-bg": {
+        "role": "semantic",
+        "displayName": "Review Bg",
+        "canonical": "#e6eef8",
+        "tonalRamp": [
+          "oklch(15% 0.01599 253.90)",
+          "oklch(26% 0.01599 253.90)",
+          "oklch(38% 0.01599 253.90)",
+          "oklch(49% 0.01599 253.90)",
+          "oklch(61% 0.01599 253.90)",
+          "oklch(72% 0.01599 253.90)",
+          "oklch(84% 0.01599 253.90)",
+          "oklch(95% 0.01599 253.90)"
+        ]
+      },
+      "review-text": {
+        "role": "semantic",
+        "displayName": "Review Text",
+        "canonical": "#325d91",
+        "tonalRamp": [
+          "oklch(15% 0.09743 254.33)",
+          "oklch(26% 0.09743 254.33)",
+          "oklch(38% 0.09743 254.33)",
+          "oklch(49% 0.09743 254.33)",
+          "oklch(61% 0.09743 254.33)",
+          "oklch(72% 0.09743 254.33)",
+          "oklch(84% 0.09743 254.33)",
+          "oklch(95% 0.09743 254.33)"
+        ]
+      },
+      "revision-bg": {
+        "role": "semantic",
+        "displayName": "Revision Bg",
+        "canonical": "#fff0d6",
+        "tonalRamp": [
+          "oklch(15% 0.03775 81.52)",
+          "oklch(26% 0.03775 81.52)",
+          "oklch(38% 0.03775 81.52)",
+          "oklch(49% 0.03775 81.52)",
+          "oklch(61% 0.03775 81.52)",
+          "oklch(72% 0.03775 81.52)",
+          "oklch(84% 0.03775 81.52)",
+          "oklch(95% 0.03775 81.52)"
+        ]
+      },
+      "revision-text": {
+        "role": "semantic",
+        "displayName": "Revision Text",
+        "canonical": "#875713",
+        "tonalRamp": [
+          "oklch(15% 0.10038 69.55)",
+          "oklch(26% 0.10038 69.55)",
+          "oklch(38% 0.10038 69.55)",
+          "oklch(49% 0.10038 69.55)",
+          "oklch(61% 0.10038 69.55)",
+          "oklch(72% 0.10038 69.55)",
+          "oklch(84% 0.10038 69.55)",
+          "oklch(95% 0.10038 69.55)"
+        ]
+      },
+      "ready-bg": {
+        "role": "semantic",
+        "displayName": "Ready Bg",
+        "canonical": "#e1efdf",
+        "tonalRamp": [
+          "oklch(15% 0.02595 141.77)",
+          "oklch(26% 0.02595 141.77)",
+          "oklch(38% 0.02595 141.77)",
+          "oklch(49% 0.02595 141.77)",
+          "oklch(61% 0.02595 141.77)",
+          "oklch(72% 0.02595 141.77)",
+          "oklch(84% 0.02595 141.77)",
+          "oklch(95% 0.02595 141.77)"
+        ]
+      },
+      "ready-text": {
+        "role": "semantic",
+        "displayName": "Ready Text",
+        "canonical": "#2b6336",
+        "tonalRamp": [
+          "oklch(15% 0.09363 148.06)",
+          "oklch(26% 0.09363 148.06)",
+          "oklch(38% 0.09363 148.06)",
+          "oklch(49% 0.09363 148.06)",
+          "oklch(61% 0.09363 148.06)",
+          "oklch(72% 0.09363 148.06)",
+          "oklch(84% 0.09363 148.06)",
+          "oklch(95% 0.09363 148.06)"
+        ]
+      },
+      "published-bg": {
+        "role": "semantic",
+        "displayName": "Published Bg",
+        "canonical": "#e2eeea",
+        "tonalRamp": [
+          "oklch(15% 0.01380 174.15)",
+          "oklch(26% 0.01380 174.15)",
+          "oklch(38% 0.01380 174.15)",
+          "oklch(49% 0.01380 174.15)",
+          "oklch(61% 0.01380 174.15)",
+          "oklch(72% 0.01380 174.15)",
+          "oklch(84% 0.01380 174.15)",
+          "oklch(95% 0.01380 174.15)"
+        ]
+      },
+      "published-text": {
+        "role": "semantic",
+        "displayName": "Published Text",
+        "canonical": "#31695b",
+        "tonalRamp": [
+          "oklch(15% 0.06388 174.96)",
+          "oklch(26% 0.06388 174.96)",
+          "oklch(38% 0.06388 174.96)",
+          "oklch(49% 0.06388 174.96)",
+          "oklch(61% 0.06388 174.96)",
+          "oklch(72% 0.06388 174.96)",
+          "oklch(84% 0.06388 174.96)",
+          "oklch(95% 0.06388 174.96)"
+        ]
+      },
+      "error": {
+        "role": "semantic",
+        "displayName": "Error",
+        "canonical": "#a43228",
+        "tonalRamp": [
+          "oklch(15% 0.15154 28.85)",
+          "oklch(26% 0.15154 28.85)",
+          "oklch(38% 0.15154 28.85)",
+          "oklch(49% 0.15154 28.85)",
+          "oklch(61% 0.15154 28.85)",
+          "oklch(72% 0.15154 28.85)",
+          "oklch(84% 0.15154 28.85)",
+          "oklch(95% 0.15154 28.85)"
+        ]
+      },
+      "review-note": {
+        "role": "semantic",
+        "displayName": "Review Note",
+        "canonical": "#fbefda",
+        "tonalRamp": [
+          "oklch(15% 0.03056 81.76)",
+          "oklch(26% 0.03056 81.76)",
+          "oklch(38% 0.03056 81.76)",
+          "oklch(49% 0.03056 81.76)",
+          "oklch(61% 0.03056 81.76)",
+          "oklch(72% 0.03056 81.76)",
+          "oklch(84% 0.03056 81.76)",
+          "oklch(95% 0.03056 81.76)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "headline": {
+        "displayName": "Judul halaman",
+        "purpose": "Orientasi halaman; fallback sistem saat ini."
+      },
+      "body": {
+        "displayName": "Isi kerja",
+        "purpose": "Teks utama dan paragraf."
+      }
+    },
+    "shadows": [
+      {
+        "name": "drawer-open",
+        "value": "12px 0 36px #1a332015",
+        "purpose": "Memisahkan drawer mobile terbuka dari konten di belakangnya."
+      }
+    ],
+    "motion": [
+      {
+        "name": "button",
+        "value": "background-color 160ms, transform 160ms",
+        "purpose": "Hover naik 1px dan active turun 1px."
+      },
+      {
+        "name": "drawer",
+        "value": "transform 180ms ease-out",
+        "purpose": "Buka/tutup sidebar sampai 1023px."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "prefers-reduced-motion mematikan transisi dan animasi."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "min-width: 1600px"
+      },
+      {
+        "name": "compact",
+        "value": "max-width: 1279px"
+      },
+      {
+        "name": "drawer",
+        "value": "max-width: 1023px"
+      },
+      {
+        "name": "mobile",
+        "value": "max-width: 767px"
+      }
+    ],
+    "sources": [
+      "resources/css/app.css",
+      "resources/views/layouts/app.blade.php",
+      "resources/views/components/field.blade.php",
+      "resources/views/components/status.blade.php",
+      "resources/views/components/reference-form.blade.php",
+      "resources/views/contents/index.blade.php",
+      "resources/views/contents/show.blade.php",
+      "PRODUCT.md"
+    ],
+    "extractionNotes": [
+      "Nilai dari kode sumber; tidak ada sampling computed styles dalam tahap dokumentasi.",
+      "Instrument Sans dideklarasikan tetapi tidak dibundel; fallback sistem adalah runtime saat ini.",
+      "Tonal ramps disintesis untuk panel dokumentasi; bukan palet tambahan pada aplikasi.",
+      "Padding, ukuran, dan radius Tailwind 4 diterjemahkan ke CSS literal pada cuplikan."
+    ]
+  },
+  "components": [
+    {
+      "name": "Tombol primary",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Tindakan utama.",
+      "html": "<button class=\"ds-button-primary\" type=\"button\">Buat draf</button>",
+      "css": ".ds-button-primary{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid transparent;border-radius:8px;font-size:14px;line-height:20px;font-weight:600;background:var(--accent,#246344);color:#fff;cursor:pointer;transition:background-color 160ms,transform 160ms;}.ds-button-primary:hover{background:#194b32;transform:translateY(-1px);}.ds-button-primary:active{transform:translateY(1px);}.ds-button-primary:focus-visible{outline:2px solid var(--accent,#246344);outline-offset:4px;}.ds-button-primary:disabled{opacity:.6;cursor:wait;}@media(prefers-reduced-motion:reduce){.ds-button-primary{transition:none;}}"
+    },
+    {
+      "name": "Tombol secondary",
+      "kind": "button",
+      "description": "Tindakan pendamping.",
+      "html": "<button class=\"ds-button-secondary\" type=\"button\">Simpan referensi</button>",
+      "css": ".ds-button-secondary{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:10px 16px;border:1px solid #cfd6cd;border-radius:8px;font-size:14px;line-height:20px;font-weight:600;background:#fff;color:#34453a;cursor:pointer;transition:background-color 160ms,transform 160ms;}.ds-button-secondary:hover{background:#edf1e9;transform:translateY(-1px);}.ds-button-secondary:active{transform:translateY(1px);}.ds-button-secondary:focus-visible{outline:2px solid var(--accent,#246344);outline-offset:4px;}.ds-button-secondary:disabled{opacity:.6;cursor:wait;}@media(prefers-reduced-motion:reduce){.ds-button-secondary{transition:none;}}"
+    },
+    {
+      "name": "Bidang isian",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Label, isian, dan kesalahan yang terhubung.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-title\">Judul konten</label><input id=\"ds-title\" value=\"Ide konten mingguan\" aria-describedby=\"ds-hint\"><p id=\"ds-hint\">Gunakan judul yang mudah dikenali tim.</p></div>",
+      "css": ".ds-field{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;color:var(--ink,#202a24);}.ds-field label{display:block;margin-bottom:8px;font-size:14px;line-height:20px;font-weight:500;}.ds-field input{box-sizing:border-box;width:100%;min-height:46px;padding:0 12px;border:1px solid #cbd2c9;border-radius:8px;font:inherit;background:#fff;color:var(--ink,#202a24);caret-color:var(--accent,#246344);}.ds-field input:focus-visible{outline:2px solid var(--accent,#246344);outline-offset:4px;}.ds-field input[aria-invalid=\"true\"]{border-color:#b23f36;}.ds-field p{margin:8px 0 0;font-size:12px;line-height:1.625;color:var(--muted,#647067);}"
+    },
+    {
+      "name": "Navigasi aktif",
+      "kind": "nav",
+      "description": "Tujuan aktif pada sidebar.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navigasi utama\"><a href=\"#konten\" aria-current=\"page\"><svg aria-hidden=\"true\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\"><rect x=\"4\" y=\"4\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"14\" y=\"4\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"4\" y=\"14\" width=\"6\" height=\"6\" rx=\"1\"/><rect x=\"14\" y=\"14\" width=\"6\" height=\"6\" rx=\"1\"/></svg>Draf konten</a></nav>",
+      "css": ".ds-nav{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;padding:12px;background:#f0f2eb;}.ds-nav a{display:flex;align-items:center;gap:12px;min-height:48px;padding:0 12px;border-radius:8px;text-decoration:none;font-size:14px;font-weight:500;background:#dce8d3;color:#224e31;transition:background-color 150ms;}.ds-nav a:hover{background:#e4e9de;}.ds-nav a:focus-visible{outline:2px solid var(--accent,#246344);outline-offset:4px;}.ds-nav svg{width:20px;height:20px;flex-shrink:0;}@media(prefers-reduced-motion:reduce){.ds-nav a{transition:none;}}"
+    },
+    {
+      "name": "Status konten",
+      "kind": "chip",
+      "description": "Warna semantik dan label tetap terbaca.",
+      "html": "<span class=\"ds-status\"><span aria-hidden=\"true\"></span>Siap upload</span>",
+      "css": ".ds-status{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;display:inline-flex;align-items:center;gap:6px;width:fit-content;padding:4px 10px;border-radius:6px;background:#e1efdf;color:#2b6336;font-size:12px;line-height:16px;font-weight:500;white-space:nowrap;}.ds-status span{width:6px;height:6px;border-radius:50%;background:currentColor;}"
+    },
+    {
+      "name": "Panel detail",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Wadah fakta dan isi detail.",
+      "html": "<section class=\"ds-panel\"><h2>Detail publikasi</h2><dl><dt>Platform</dt><dd>Instagram</dd><dt>Jadwal upload</dt><dd>Belum dijadwalkan</dd></dl></section>",
+      "css": ".ds-panel{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;min-width:0;padding:28px;border:1px solid var(--line,#dfe4dd);border-radius:12px;background:#fff;color:var(--ink,#202a24);}.ds-panel h2{margin:0 0 24px;font-size:18px;font-weight:600;line-height:1.375;letter-spacing:-.015em;}.ds-panel dl{margin:0;}.ds-panel dt{margin-bottom:8px;font-size:12px;color:var(--muted,#647067);}.ds-panel dd{margin:0 0 24px;font-size:14px;line-height:20px;font-weight:500;overflow-wrap:anywhere;}.ds-panel dd:last-child{margin-bottom:0;}@media(max-width:767px){.ds-panel{padding:24px 20px;}}"
+    },
+    {
+      "name": "Ringkasan editorial",
+      "kind": "custom",
+      "description": "Ringkasan konten siap upload.",
+      "html": "<section class=\"ds-summary\"><span class=\"ds-number\">4</span><div><h2>Konten siap upload</h2><p>Materi yang sudah mendapat persetujuan admin.</p></div></section>",
+      "css": ".ds-summary{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;display:flex;align-items:center;gap:24px;padding:24px 28px;border-radius:12px;background:#e8eee1;color:var(--ink,#202a24);}.ds-number{font-size:56px;line-height:1;font-weight:500;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#284e33;}.ds-summary h2{margin:0;font-size:16px;line-height:1.375;font-weight:600;letter-spacing:-.015em;}.ds-summary p{margin:4px 0 0;font-size:14px;line-height:1.625;color:#4e634f;}@media(max-width:767px){.ds-summary{padding:24px 20px;gap:20px;}.ds-number{font-size:48px;}.ds-summary h2{font-size:15px;}.ds-summary p{font-size:13px;}}"
+    },
+    {
+      "name": "Catatan review",
+      "kind": "card",
+      "description": "Komentar reviewer dalam bidang amber.",
+      "html": "<section class=\"ds-review\"><h2>Catatan review</h2><p>Tambahkan sumber pada referensi konten.</p><span>Admin Pensmate</span></section>",
+      "css": ".ds-review{font-family:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;padding:24px;border-radius:12px;background:#fbefda;color:var(--ink,#202a24);}.ds-review h2{margin:0;font-size:18px;line-height:1.375;font-weight:600;letter-spacing:-.015em;}.ds-review p{margin:12px 0;font-size:14px;line-height:1.625;white-space:pre-wrap;overflow-wrap:anywhere;color:#70531f;}.ds-review span{font-size:12px;line-height:1.625;color:var(--muted,#647067);}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Meja editorial",
+    "overview": "Meja editorial adalah ruang kerja yang tenang, jelas, dan mudah dipindai. Kertas putih hangat dan hijau membentuk suasana kerja tim tanpa mengalihkan perhatian dari materi konten.\n\nMode Operate mengutamakan tugas berulang: membaca judul, mengenali status, menilai materi, dan mengambil tindakan. Sidebar menjaga orientasi; garis tipis dan bidang tonal membagi informasi. Bahasa antarmuka tetap Indonesia.",
+    "keyCharacteristics": [
+      "Putih hangat dengan aksen hijau yang terarah.",
+      "Baris konten mudah dipindai dan panel detail terbaca.",
+      "Permukaan datar, garis tipis, dan sudut lembut.",
+      "Label status selalu menyertai warna."
+    ],
+    "rules": [
+      {
+        "name": "The Status Label Rule",
+        "body": "Warna status selalu disertai teks; titik warna hanya penguat.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat Workspace Rule",
+        "body": "Pisahkan kelompok dengan garis dan nada bidang; simpan bayangan untuk drawer yang menutup konten.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do gunakan hijau utama untuk tindakan utama dan navigasi terpilih.",
+      "Do pertahankan judul, status, penanggung jawab, dan jadwal sebagai informasi yang mudah dipindai.",
+      "Do tampilkan label teks pada status serta fokus keyboard yang terlihat.",
+      "Do gunakan bahasa Indonesia untuk instruksi dan umpan balik."
+    ],
+    "donts": [
+      "Don't menambah bayangan dekoratif pada panel datar.",
+      "Don't mengandalkan warna saja untuk menyampaikan status atau kesalahan.",
+      "Don't menyatakan Instrument Sans sudah dimuat; berkas font belum dibundel.",
+      "Don't memaksakan tabel desktop ke layar kecil; gunakan susunan baris responsif yang sudah ada."
+    ]
+  }
+}
