@@ -7,12 +7,13 @@
     <span class="login-foot">Ruang kerja tim Pensmate</span>
 </section>
 <section class="login-form-wrap"><div class="login-form">
-    <h2>Masuk ke ruang kerja</h2><p class="muted mb-8">Gunakan akun yang diberikan admin tim.</p>
+    <h2>Masuk ke ruang kerja</h2><p class="muted mb-8">Masuk dengan email dan password akun Pensmate.</p>
+    @if(session('success'))<div class="notice notice-success" role="status">{{ session('success') }}</div>@endif
     <form method="POST" action="{{ route('login.store') }}" class="form-stack">@csrf
         <x-field name="email" label="Email" type="email" autocomplete="username" required autofocus/>
         <x-field name="password" label="Password" type="password" autocomplete="current-password" required/>
         <button class="button button-primary w-full" data-loading="Memeriksa akun...">Masuk ke Pensmate<x-icon name="arrow"/></button>
     </form>
-    <p class="hint mt-6">Belum punya akses atau lupa password? Hubungi admin tim.</p>
+    <p class="hint mt-6">Belum punya akses? Minta link aktivasi ke admin. Jika lupa password, hubungi admin tim.</p>
 </div></section>
 @endsection

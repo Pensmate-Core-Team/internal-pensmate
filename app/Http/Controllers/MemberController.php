@@ -5,22 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
-use Illuminate\Validation\ValidationException;
 
 class MemberController extends Controller
 {
     public function index(Request $request)
     {
-        $filters = $request->validate(['q' => ['nullable', 'string', 'max:150'], 'role' => ['nullable', Rule::in(['admin', 'member'])], 'active' => ['nullable', Rule::in(['1', '0'])]]);
-        $members = User::withCount('assignedContents')
-            ->when($filters['q'] ?? null, fn ($q, $term) => $q->where(fn ($q) => $q->where('name', 'like', '%'.$term.'%')->orWhere('email', 'like', '%'.$term.'%')))
-            ->when($filters['role'] ?? null, fn ($q, $role) => $q->where('role', $role))
+        $filters = $request->validate(['q' => ['nullable', 'string', 'max:150'],
+            'generation' => ['nullable', 'integer', 'between:1,99'], 'active' => ['nullable', Rule::in(['1', '0'])]]);
+        $base = User::whereIn('role', ['member', 'coordinator']);
+        $members = (clone $base)->withCount('assignedContents')
+            ->when($filters['q'] ?? null, fn ($q, $term) => $q->where(fn ($q) => $q->where('name', 'like', '%'.$term.'%')->orWhere('email', 'like', '%'.$term.'%')->orWhere('class_name', 'like', '%'.$term.'%')->orWhere('study_program', 'like', '%'.$term.'%')))
+            ->when($filters['generation'] ?? null, fn ($q, $generation) => $q->where('generation', $generation))
             ->when(isset($filters['active']) && $filters['active'] !== null, fn ($q) => $q->where('is_active', $filters['active']))
             ->orderByDesc('is_active')->orderBy('name')->paginate(12)->withQueryString();
 
-        return view('members.index', ['members' => $members, 'total' => User::count(), 'activeCount' => User::where('is_active', true)->count()]);
+        return view('members.index', ['members' => $members, 'total' => (clone $base)->count(),
+            'activeCount' => (clone $base)->where('is_active', true)->count(),
+            'generations' => (clone $base)->whereNotNull('generation')->distinct()->orderBy('generation')->pluck('generation')]);
     }
 
     public function create()
@@ -28,43 +32,87 @@ class MemberController extends Controller
         return view('members.form', ['member' => new User(['role' => 'member', 'is_active' => true])]);
     }
 
+    public function show(User $member)
+    {
+        $this->ensureMember($member);
+
+        return view('members.show', ['member' => $member->loadCount('assignedContents'), 'activation' => $member->activationLinks()->latest('id')->first()]);
+    }
+
     public function edit(User $member)
     {
+        $this->ensureMember($member);
+
         return view('members.form', compact('member'));
     }
 
     public function store(Request $request)
     {
-        User::create($this->validated($request));
+        $data = $this->validated($request);
+        $data['password'] ??= Str::random(64);
+        User::create($data);
 
-        return redirect()->route('members.index')->with('success', 'Member berhasil ditambahkan. Bagikan akses secara pribadi.');
+        return redirect()->route('members.index')->with('success', 'Member berhasil ditambahkan.');
     }
 
     public function update(Request $request, User $member)
     {
+        $this->ensureMember($member);
         $data = $this->validated($request, $member);
-        DB::transaction(function () use ($member, $data, $request) {
-            $admins = User::where('role', 'admin')->where('is_active', true)->lockForUpdate()->get();
+        DB::transaction(function () use ($member, $data) {
             $target = User::lockForUpdate()->findOrFail($member->id);
-            if ($target->id === $request->user()->id && ($data['role'] !== 'admin' || ! $data['is_active'])) {
-                throw ValidationException::withMessages(['role' => 'Akun sendiri harus tetap admin aktif. Minta admin lain mengubah aksesmu.']);
+            $this->ensureMember($target);
+            if (array_key_exists('password', $data) || $target->email !== ($data['email'] ?? null) || ! $data['is_active']) {
+                $target->remember_token = Str::random(60);
+                $target->activationLinks()->whereNull('used_at')->whereNull('revoked_at')->update(['revoked_at' => now()]);
             }
-            if ($target->isAdmin() && $target->is_active && ($data['role'] !== 'admin' || ! $data['is_active']) && $admins->count() <= 1) {
-                throw ValidationException::withMessages(['role' => 'Tim harus memiliki minimal satu admin aktif.']);
-            }
-            $target->update($data);
+            $target->fill($data)->save();
         });
 
-        return redirect()->route('members.index')->with('success', 'Data member berhasil diperbarui.');
+        return redirect()->route('members.show', $member)->with('success', 'Data member berhasil diperbarui.');
+    }
+
+    public function destroy(User $member)
+    {
+        $this->ensureMember($member);
+        DB::transaction(function () use ($member) {
+            $target = User::lockForUpdate()->findOrFail($member->id);
+            $this->ensureMember($target);
+            $target->forceFill(['is_active' => false, 'remember_token' => Str::random(60)])->save();
+            $target->activationLinks()->whereNull('used_at')->whereNull('revoked_at')->update(['revoked_at' => now()]);
+            $target->delete();
+        });
+
+        return redirect()->route('members.index')->with('success', 'Member dihapus dari daftar. Histori konten tetap tersimpan.');
+    }
+
+    private function ensureMember(User $member): void
+    {
+        abort_unless(in_array($member->role, ['member', 'coordinator'], true), 404);
     }
 
     private function validated(Request $request, ?User $member = null): array
     {
+        if (is_string($request->input('email'))) {
+            $request->merge(['email' => strtolower(trim($request->input('email')))]);
+        }
+        if (! $request->has('role')) {
+            $request->merge(['role' => $member?->role ?? 'member']);
+        }
+        if (is_string($request->input('division'))) {
+            $request->merge(['division' => Str::squish($request->input('division'))]);
+        }
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:120'], 'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($member)],
-            'role' => ['required', Rule::in(['admin', 'member'])], 'is_active' => ['required', 'boolean'],
-            'password' => [$member ? 'nullable' : 'required', 'confirmed', Password::min(10)->letters()->numbers()],
+            'name' => ['required', 'string', 'max:120'],
+            'email' => ['nullable', 'required_with:password', 'required_if:role,coordinator', 'email', 'max:255', Rule::unique('users')->ignore($member)],
+            'generation' => ['nullable', 'integer', 'between:1,99'],
+            'class_name' => ['nullable', 'string', 'max:255'], 'study_program' => ['nullable', 'string', 'max:255'],
+            'division' => ['nullable', 'required_if:role,coordinator', 'string', 'max:120'],
+            'role' => ['required', Rule::in(['member', 'coordinator'])], 'is_active' => ['required', 'boolean'],
+            'password' => [Rule::requiredIf(filled($request->input('email')) && (! $member || ! filled($member->email))),
+                'nullable', 'confirmed', Password::min(10)->letters()->numbers()],
         ]);
+        $data['email'] ??= null;
         if (! filled($data['password'] ?? null)) {
             unset($data['password']);
         }

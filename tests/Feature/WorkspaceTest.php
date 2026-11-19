@@ -13,20 +13,28 @@ class WorkspaceTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutVite();
+        Storage::fake('local');
+    }
+
     private function user(string $role = 'member'): User
     {
-        return User::factory()->create(['role' => $role, 'is_active' => true]);
+        return User::factory()->create(['role' => $role, 'is_active' => true, 'division' => $role === 'coordinator' ? 'Operasional' : 'Media']);
     }
 
     private function content(User $owner, string $status = 'draft'): Content
     {
-        $content = new Content(['title' => 'Konten pengujian', 'caption' => 'Caption lengkap.', 'platform' => 'Instagram', 'assigned_to' => $owner->id, 'scheduled_at' => now()->addDay()]);
+        $content = new Content(['title' => 'Konten pengujian', 'caption' => 'Caption lengkap.', 'platform' => 'Instagram', 'assigned_to' => $owner->id, 'scheduled_at' => now()->addDay(), 'division' => 'Media']);
         $content->created_by = $owner->id;
         $content->status = $status;
         $content->media_path = 'content-media/test.png';
         $content->media_name = 'test.png';
         $content->media_mime = 'image/png';
         $content->save();
+        Storage::disk('local')->put('content-media/test.png', 'test-image');
 
         return $content;
     }
@@ -85,6 +93,8 @@ class WorkspaceTest extends TestCase
         $this->assertSame('revision', $content->fresh()->status);
         $this->actingAs($owner)->post($url, ['action' => 'submit'])->assertSessionHasNoErrors();
         $this->actingAs($admin)->post($url, ['action' => 'approve'])->assertSessionHasNoErrors();
+        $this->assertSame('in_review', $content->fresh()->status);
+        $this->actingAs($this->user('coordinator'))->post($url, ['action' => 'approve'])->assertSessionHasNoErrors();
         $this->assertSame('ready', $content->fresh()->status);
         $this->actingAs($owner)->post($url, ['action' => 'publish', 'published_url' => 'javascript:alert(1)'])->assertSessionHasErrors('published_url');
         $this->post($url, ['action' => 'publish', 'published_url' => 'https://instagram.com/p/test'])->assertSessionHasNoErrors();
@@ -157,7 +167,7 @@ class WorkspaceTest extends TestCase
         $this->put(route('members.update', $member), ['name' => $member->name, 'email' => $member->email, 'role' => 'member', 'is_active' => '0'])->assertSessionHasNoErrors();
         $this->assertFalse($member->fresh()->is_active);
         $this->assertDatabaseHas('contents', ['id' => $content->id, 'assigned_to' => $member->id]);
-        $this->put(route('members.update', $admin), ['name' => $admin->name, 'email' => $admin->email, 'role' => 'member', 'is_active' => '0'])->assertSessionHasErrors('role');
+        $this->put(route('members.update', $admin), ['name' => $admin->name, 'email' => $admin->email, 'role' => 'member', 'is_active' => '0'])->assertNotFound();
         $this->assertTrue($admin->fresh()->isAdmin());
     }
 

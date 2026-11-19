@@ -5,30 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\Content;
 use App\Models\ContentReference;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 class ReferenceController extends Controller
 {
     public function store(Request $request, Content $content)
     {
-        Gate::authorize('update', $content);
-        $content->references()->create([...$this->validated($request, 'newReference'), 'created_by' => $request->user()->id]);
+        DB::transaction(function () use ($request, $content) {
+            $locked = Content::lockForUpdate()->findOrFail($content->id);
+            Gate::authorize('update', $locked);
+            $locked->references()->create([...$this->validated($request, 'newReference'), 'created_by' => $request->user()->id]);
+        });
 
         return back()->with('success', 'Referensi berhasil ditambahkan.');
     }
 
     public function update(Request $request, Content $content, ContentReference $reference)
     {
-        $this->authorizeReference($content, $reference);
-        $reference->update($this->validated($request, 'reference-'.$reference->id));
+        DB::transaction(function () use ($request, $content, $reference) {
+            $locked = Content::lockForUpdate()->findOrFail($content->id);
+            $this->authorizeReference($locked, $reference);
+            $reference->update($this->validated($request, 'reference-'.$reference->id));
+        });
 
         return back()->with('success', 'Referensi berhasil diperbarui.');
     }
 
     public function destroy(Content $content, ContentReference $reference)
     {
-        $this->authorizeReference($content, $reference);
-        $reference->delete();
+        DB::transaction(function () use ($content, $reference) {
+            $locked = Content::lockForUpdate()->findOrFail($content->id);
+            $this->authorizeReference($locked, $reference);
+            $reference->delete();
+        });
 
         return back()->with('success', 'Referensi berhasil dihapus.');
     }

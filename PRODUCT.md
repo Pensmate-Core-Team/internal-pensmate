@@ -24,7 +24,7 @@ Member membuat draf dan mengajukan review. Admin menyetujui atau meminta revisi.
 
 ## Capabilities and Constraints
 
-Lingkup: fitur 4 (draf siap upload), 5 (referensi di timeline), dan 6 (manage member). Timeline, poin, absensi, dan plotting job dikerjakan rekan tim. Satu model Content menjadi titik integrasi timeline. Akun nonaktif mempertahankan histori. Admin dan member memakai otorisasi backend.
+Lingkup: fitur 4 (draf siap upload), 5 (referensi di timeline), dan 6 (manage member). Timeline bulanan lokal kini mengintegrasikan link referensi sesuai permintaan pengguna. Feed tersedia untuk kalender rekan tim; poin, absensi dan plotting job tetap di luar modul ini. Satu model Content menjadi titik integrasi timeline. Akun nonaktif mempertahankan histori. Admin dan member memakai otorisasi backend.
 
 ## Brand Commitments
 

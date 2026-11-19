@@ -17,6 +17,9 @@ class AuthController extends Controller
 
     public function store(Request $request)
     {
+        if (is_string($request->input('email'))) {
+            $request->merge(['email' => Str::lower(trim($request->input('email')))]);
+        }
         $data = $request->validate(['email' => ['required', 'email'], 'password' => ['required', 'string']]);
         $key = Str::lower($data['email']).'|'.$request->ip();
         if (RateLimiter::tooManyAttempts($key, 5)) {

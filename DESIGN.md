@@ -29,25 +29,25 @@ colors:
   review-note: "#fbefda"
 typography:
   headline:
-    fontFamily: "'Instrument Sans', ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "'Google Sans Flex', ui-sans-serif, system-ui, sans-serif"
     fontSize: "2rem"
     fontWeight: 600
     lineHeight: "1.25"
     letterSpacing: "-0.03em"
   title:
-    fontFamily: "'Instrument Sans', ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "'Google Sans Flex', ui-sans-serif, system-ui, sans-serif"
     fontSize: "1.125rem"
     fontWeight: 600
     lineHeight: "1.375"
     letterSpacing: "-0.015em"
   body:
-    fontFamily: "'Instrument Sans', ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "'Google Sans Flex', ui-sans-serif, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: "1.5"
     letterSpacing: "normal"
   label:
-    fontFamily: "'Instrument Sans', ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "'Google Sans Flex', ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.875rem"
     fontWeight: 500
     lineHeight: "1.428571"
@@ -120,7 +120,7 @@ Palet terasa seperti kertas hangat dengan penanda hijau. Frontmatter memuat nila
 
 ## Typography
 
-**Display Font / Body Font:** Instrument Sans dideklarasikan, lalu `ui-sans-serif`, `system-ui`, dan `sans-serif`. Tidak ada berkas Instrument Sans yang dibundel; runtime saat ini memakai fallback sistem. Jangan menambahkan unduhan font tanpa kebutuhan baru.
+**Display Font / Body Font:** Google Sans Flex dimuat dari Google Fonts melalui partial `components.font-links`, dengan fallback `ui-sans-serif`, `system-ui`, dan `sans-serif`. Token `--font-sans` berlaku untuk seluruh teks dan kontrol formulir. Optical sizing mengikuti ukuran teks secara otomatis.
 
 Huruf sans memberi ritme kerja yang lugas. Judul menggunakan tracking rapat; isi dan metadata tetap netral. Tidak ada font mono khusus.
 
@@ -195,5 +195,27 @@ Pengaturan `prefers-reduced-motion: reduce` mematikan transisi dan animasi. Pert
 
 - Don't menambah bayangan dekoratif pada panel datar.
 - Don't mengandalkan warna saja untuk menyampaikan status atau kesalahan.
-- Don't menyatakan Instrument Sans sudah dimuat; berkas font belum dibundel.
+- Don't menimpa font global pada komponen; gunakan token `--font-sans` yang sama.
 - Don't memaksakan tabel desktop ke layar kecil; gunakan susunan baris responsif yang sudah ada.
+
+## Shared typography and icons
+
+Google Sans Flex is loaded through the shared font-links Blade partial. All text and form controls inherit the same font. Icons use the official Phosphor regular SVGs from @phosphor-icons/core 2.1.1, embedded locally in the existing x-icon component. Existing icon names and CSS sizing remain compatible; the source license is in resources/icons/PHOSPHOR-LICENSE.txt.
+
+## Direktori member
+
+Manage member memakai grid kartu setara sesuai permintaan pengguna: generasi dan
+status di kepala kartu, inisial, nama, kelas/prodi, lalu tindakan detail dan edit.
+Grid desktop memakai 3 kolom dengan jarak 32px; layar sampai 1279px memakai
+2 kolom dan seluler sampai 767px memakai 1 kolom, dengan jarak 24px. Nama/prodi panjang tetap membungkus tanpa dipotong. Google Sans Flex, Phosphor regular dan
+palet hijau yang ada dipertahankan. Hapus ada pada detail dengan konfirmasi.
+Filter generasi/status, pencarian dan pagination tetap berada di luar kartu.
+
+## Media final dan review
+
+Detail draf memakai galeri media bernomor sesuai urutan carousel, tombol salin
+caption dengan feedback aria-live, checklist dua approval, dan riwayat per versi.
+Form edit menyediakan tombol Naik/Turun dan checkbox hapus media; semua kontrol
+mempertahankan fokus dan ukuran sentuh. Referensi tetap memakai panel bersama.
+Galeri turun menjadi satu kolom pada ruang sempit. Grid member 3 kolom dan jarak
+yang disetujui tetap dipertahankan. Kalender timeline berada di modul rekan tim.

@@ -2,7 +2,7 @@
 @section('title', 'Draf konten')
 @section('content')
 <div class="page-heading"><div><h1>Draf konten</h1><p>Siapkan materi, kumpulkan referensi, lalu ajukan untuk review.</p></div><a class="button button-primary" href="{{ route('contents.create') }}"><x-icon name="plus"/>Buat draf</a></div>
-<div class="editorial-summary"><div><span class="summary-number">{{ $counts->get('ready', 0) }}</span><div><h2>Konten siap upload</h2><p>Materi yang sudah mendapat persetujuan admin.</p></div></div><a class="text-link" href="{{ route('contents.index', ['status' => 'ready']) }}">Lihat konten<x-icon name="arrow"/></a></div>
+<div class="editorial-summary"><div><span class="summary-number">{{ $counts->get('ready', 0) }}</span><div><h2>Konten siap upload</h2><p>Materi yang sudah disetujui admin dan koordinator divisi lain.</p></div></div><a class="text-link" href="{{ route('contents.index', ['status' => 'ready']) }}">Lihat konten<x-icon name="arrow"/></a></div>
 <nav class="status-tabs" aria-label="Filter status konten">
     <a href="{{ route('contents.index', request()->except('status', 'page')) }}" class="{{ !request('status') ? 'selected' : '' }}" @if(!request('status')) aria-current="page" @endif>Semua konten<span>{{ $counts->sum() }}</span></a>
     @foreach(\App\Models\Content::STATUSES as $key => $label)<a class="{{ request('status') === $key ? 'selected' : '' }}" @if(request('status') === $key) aria-current="page" @endif href="{{ route('contents.index', [...request()->except('page'), 'status' => $key]) }}">{{ $label }}<span>{{ $counts->get($key, 0) }}</span></a>@endforeach
@@ -17,7 +17,7 @@
     <div class="list-header"><span>Konten</span><span>Status</span><span>Penanggung jawab</span><span>Jadwal upload</span><span></span></div>
     @forelse($contents as $content)
     <article class="content-row">
-        <div class="content-identity"><span class="content-file"><x-icon/></span><div><a class="content-title" href="{{ route('contents.show', $content) }}">{{ $content->title }}</a><p>{{ $content->platform }}<span class="meta-dot">·</span>{{ $content->references_count }} referensi</p></div></div>
+        <div class="content-identity"><span class="content-file"><x-icon/></span><div><a class="content-title" href="{{ route('contents.show', $content) }}">{{ $content->title }}</a><p>{{ $content->platform }}<span class="meta-dot">·</span><a href="{{ route('contents.show', $content) }}#references" class="reference-count-link">{{ $content->references_count }} referensi</a></p></div></div>
         <div><x-status :status="$content->status"/></div>
         <div class="row-person"><span class="avatar avatar-small">{{ mb_substr($content->assignee->name, 0, 1) }}</span><span>{{ $content->assignee->name }}</span></div>
         <div class="row-date">@if($content->scheduled_at)<span>{{ $content->scheduled_at->locale('id')->translatedFormat('d M Y') }}</span><small>{{ $content->scheduled_at->format('H:i') }} WIB</small>@else<span class="muted">Belum dijadwalkan</span>@endif</div>
