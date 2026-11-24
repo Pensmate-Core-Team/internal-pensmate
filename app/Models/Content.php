@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Observers\ContentHistoryObserver;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+#[ObservedBy(ContentHistoryObserver::class)]
 class Content extends Model
 {
     public const STATUSES = ['draft' => 'Draf', 'in_review' => 'Dalam review', 'revision' => 'Perlu revisi', 'ready' => 'Siap upload', 'published' => 'Terunggah'];
@@ -93,5 +96,10 @@ class Content extends Model
     public function references(): HasMany
     {
         return $this->hasMany(ContentReference::class);
+    }
+
+    public function histories(): HasMany
+    {
+        return $this->hasMany(ContentHistory::class)->latest('id');
     }
 }
