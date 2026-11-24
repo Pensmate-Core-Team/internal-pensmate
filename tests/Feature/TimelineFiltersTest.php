@@ -8,6 +8,7 @@ use App\Support\TimelineFilters;
 use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
@@ -77,6 +78,28 @@ class TimelineFiltersTest extends TestCase
         $this->content($owner, ['division' => 'Produksi']);
 
         $this->assertSame([$a->id, $b->id], $this->ids($this->filters(['division' => ' KREATIF '])));
+    }
+
+    public function test_division_filter_matches_raw_values_with_inner_whitespace(): void
+    {
+        $owner = $this->actor();
+        $squished = $this->content($owner, ['division' => 'Media Kreatif']);
+        $raw = $this->content($owner);
+        DB::table('contents')->where('id', $raw->id)->update(['division' => "Media  Kreatif\t"]);
+        $this->content($owner, ['division' => 'Media']);
+
+        $this->assertSame([$squished->id, $raw->id], $this->ids($this->filters(['division' => 'media kreatif'])));
+    }
+
+    public function test_division_options_sort_case_insensitively_and_prefer_common_then_title_spelling(): void
+    {
+        $owner = $this->actor();
+        foreach (['Zeta', 'alpha', 'KREATIF', 'Kreatif', 'produksi', 'PRODUKSI', 'PRODUKSI'] as $division) {
+            $this->content($owner, ['division' => $division]);
+        }
+
+        $this->assertSame(['alpha' => 'alpha', 'kreatif' => 'Kreatif', 'produksi' => 'PRODUKSI', 'zeta' => 'Zeta'],
+            TimelineFilters::divisionOptions($owner)->all());
     }
 
     public function test_range_is_inclusive_in_wib_and_excludes_unscheduled(): void

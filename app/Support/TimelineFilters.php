@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class TimelineFilters
@@ -58,7 +59,7 @@ class TimelineFilters
         return $query
             ->when($value('status'), fn (Builder $q, $status) => $q->where('status', $status))
             ->when($value('platform'), fn (Builder $q, $platform) => $q->where('platform', $platform))
-            ->when($value('division'), fn (Builder $q, $division) => $q->whereRaw('LOWER(TRIM(division)) = ?', [User::divisionKey($division)]))
+            ->when($value('division'), fn (Builder $q, $division) => $q->whereIn('division', self::spellingsOf($division)))
             ->when($value('assignee'), fn (Builder $q, $assignee) => $q->where('assigned_to', $assignee))
             ->when($value('from'), fn (Builder $q, $from) => $q->where('scheduled_at', '>=', CarbonImmutable::createFromFormat('!Y-m-d', $from, $timezone)->startOfDay()))
             ->when($value('to'), fn (Builder $q, $to) => $q->where('scheduled_at', '<=', CarbonImmutable::createFromFormat('!Y-m-d', $to, $timezone)->endOfDay()))
@@ -66,14 +67,38 @@ class TimelineFilters
             ->when($value('flag') === 'needs_assignee', fn (Builder $q) => $q->needingAssignee());
     }
 
+    /**
+     * Raw stored spellings that normalize to the same division key. Matching on these
+     * (instead of SQL TRIM/LOWER) also catches values written outside Eloquent with
+     * doubled inner whitespace or tabs. Only narrows an already visibility-scoped query.
+     *
+     * @return list<string>
+     */
+    private static function spellingsOf(string $division): array
+    {
+        $key = User::divisionKey($division);
+
+        return Content::query()->whereNotNull('division')->distinct()->pluck('division')
+            ->filter(fn (string $spelling) => User::divisionKey($spelling) === $key)->values()->all();
+    }
+
     /** @return Collection<string, string> */
     public static function divisionOptions(User $user): Collection
     {
         return Content::visibleTo($user)->whereNotNull('division')->where('division', '<>', '')
-            ->distinct()->pluck('division')
-            ->groupBy(fn (string $division) => User::divisionKey($division))
-            ->map(fn (Collection $spellings) => $spellings->sort()->first())
-            ->sort();
+            ->selectRaw('division, COUNT(*) as total')->groupBy('division')->get()
+            ->groupBy(fn (Content $row) => User::divisionKey($row->division))
+            ->map(fn (Collection $spellings) => $spellings->sortBy([
+                fn ($a, $b) => $b->total <=> $a->total,
+                fn ($a, $b) => self::isTitleCase($b->division) <=> self::isTitleCase($a->division),
+                fn ($a, $b) => strcmp($a->division, $b->division),
+            ])->first()->division)
+            ->sortBy(fn (string $label) => mb_strtolower($label));
+    }
+
+    private static function isTitleCase(string $value): bool
+    {
+        return $value === Str::title(mb_strtolower($value));
     }
 
     /** @return Collection<int, array{id: int, label: string}> */
