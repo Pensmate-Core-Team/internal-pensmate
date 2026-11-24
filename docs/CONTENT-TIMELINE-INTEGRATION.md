@@ -178,3 +178,28 @@ platform/PIC satu baris. Teks lengkap tetap ada pada tooltip dan detail konten.
 Daftar referensi dibuka sebagai panel mengambang agar tidak menambah tinggi kartu;
 link dan tindakan kelola tetap menggunakan data/otorisasi yang sama. Kalender
 beralih ke agenda pada lebar sampai 1279px agar kolom laptop tidak terlalu sempit.
+
+## Daftar, papan, penanda, dan riwayat (F1 Timeline Konten)
+
+Ditambahkan 24 November 2026 pada branch `feature-timeline-poin`. Semua tampilan
+tetap memakai `Content::visibleTo`; tidak ada tabel konten baru.
+
+- **Tampilan:** `/timeline` (kalender, `timeline.index`), `/timeline/list`
+  (`timeline.list`, 25 per halaman) dan `/timeline/board` (`timeline.board`,
+  lima kolom status, maks. 50 kartu per kolom, kolom Terunggah 30 hari terakhir
+  kecuali `from`/`to` diisi). Tab di atas halaman membawa filter bersama.
+- **Filter bersama** (`App\Support\TimelineFilters`): `status`, `platform`,
+  `division` (tanpa membedakan kapitalisasi/spasi), `assignee` (user id),
+  `flag` (`overdue` / `needs_assignee`), serta `from`/`to` (`YYYY-MM-DD`, inklusif
+  WIB, hanya daftar dan papan). Daftar juga menerima `sort` = `scheduled`,
+  `-scheduled`, atau `status`. Papan mengabaikan `status`.
+- **Penanda:** `Content::isOverdue()` / scope `overdue()` = jadwal sudah lewat dan
+  belum `published`. `Content::needsAssignee()` / scope `needingAssignee()` = PIC
+  nonaktif, diarsipkan, atau belum punya email, dan belum `published`. Komponen
+  `<x-content-flags :content="$content" />` menampilkan teks, bukan hanya warna.
+- **Riwayat:** tabel `content_histories` diisi `App\Observers\ContentHistoryObserver`
+  (`#[ObservedBy]` pada `Content`) saat konten dibuat dan setiap perubahan
+  `status`, `scheduled_at`, atau `assigned_to`. Panel "Riwayat perubahan" ada di
+  detail konten. **Ubah ketiga kolom itu lewat model Eloquent (`save()`), bukan
+  `DB::table()->update()`, `Content::query()->update()` atau `saveQuietly()`**, agar
+  riwayat tidak terlewat.

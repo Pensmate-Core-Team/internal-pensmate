@@ -7,7 +7,7 @@
 <div class="detail-grid">
 <div class="form-stack">
     <section class="panel">
-        <div class="section-heading"><h2>Materi konten</h2><x-status :status="$content->status"/></div>
+        <div class="section-heading"><h2>Materi konten</h2><span class="flag-group"><x-content-flags :content="$content"/><x-status :status="$content->status"/></span></div>
         @if($content->assets->isNotEmpty())
         <ol class="asset-gallery">
             @foreach($content->assets as $asset)
@@ -33,6 +33,7 @@
         <li><p><strong>{{ $review->reviewer->name }}</strong> {{ $review->decision === 'approved' ? 'menyetujui' : 'meminta revisi' }} versi {{ $review->revision_number }}</p><p class="hint">{{ $review->reviewer_role === 'admin' ? 'Admin' : 'Koordinator' }}{{ $review->reviewer_division ? ' ? '.$review->reviewer_division : '' }} ? {{ $review->created_at->timezone('Asia/Jakarta')->format('d M Y H:i') }} WIB</p>@if($review->comment)<p class="mt-2 whitespace-pre-wrap">{{ $review->comment }}</p>@endif</li>
         @empty<li class="muted text-sm">Belum ada keputusan review.</li>@endforelse
     </ol></section>
+    <x-content-history :content="$content"/>
 </div>
 <aside class="form-stack">
     <section class="panel"><h2 class="mb-6">Detail publikasi</h2><dl class="detail-facts"><div><dt>Penanggung jawab</dt><dd>{{ $content->assignee->name }}</dd></div><div><dt>Divisi konten</dt><dd>{{ $content->division ?: 'Belum diisi' }}</dd></div><div><dt>Jadwal upload</dt><dd>{{ $content->scheduled_at?->locale('id')->translatedFormat('d M Y, H:i') ?? 'Belum dijadwalkan' }}{{ $content->scheduled_at ? ' WIB' : '' }}</dd></div><div><dt>Versi diajukan</dt><dd>{{ $content->revision_number ?: 'Belum diajukan' }}</dd></div></dl></section>

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Observers\ContentHistoryObserver;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 
+#[ObservedBy(ContentHistoryObserver::class)]
 class Content extends Model
 {
     public const STATUSES = ['draft' => 'Draf', 'in_review' => 'Dalam review', 'revision' => 'Perlu revisi', 'ready' => 'Siap upload', 'published' => 'Terunggah'];
@@ -93,5 +96,50 @@ class Content extends Model
     public function references(): HasMany
     {
         return $this->hasMany(ContentReference::class);
+    }
+
+    /** Timeline orderings: schedule (unscheduled last), reverse schedule, or workflow status. */
+    public const TIMELINE_SORTS = ['scheduled' => 'Jadwal terdekat', '-scheduled' => 'Jadwal terjauh', 'status' => 'Status'];
+
+    public function scopeTimelineOrder(Builder $query, string $sort = 'scheduled'): Builder
+    {
+        if ($sort === 'status') {
+            $statuses = array_keys(self::STATUSES);
+            $cases = implode(' ', array_map(fn ($i) => "WHEN ? THEN {$i}", array_keys($statuses)));
+            $query->orderByRaw("CASE status {$cases} ELSE ".count($statuses).' END', $statuses);
+        }
+
+        return $query->orderByRaw('scheduled_at IS NULL')
+            ->orderBy('scheduled_at', $sort === '-scheduled' ? 'desc' : 'asc')->orderBy('id');
+    }
+
+    public function isOverdue(): bool
+    {
+        return $this->scheduled_at !== null && $this->scheduled_at->lt(now()) && $this->status !== 'published';
+    }
+
+    public function needsAssignee(): bool
+    {
+        $assignee = $this->assignee;
+
+        return $this->status !== 'published'
+            && (! $assignee || ! $assignee->is_active || $assignee->trashed() || ! filled($assignee->email));
+    }
+
+    public function scopeOverdue(Builder $query): Builder
+    {
+        return $query->whereNotNull('scheduled_at')->where('scheduled_at', '<', now())->where('status', '<>', 'published');
+    }
+
+    public function scopeNeedingAssignee(Builder $query): Builder
+    {
+        return $query->where('status', '<>', 'published')->whereHas('assignee', fn (Builder $assignee) => $assignee
+            ->where(fn (Builder $unable) => $unable->where('is_active', false)->orWhereNotNull('deleted_at')
+                ->orWhereNull('email')->orWhere('email', '')));
+    }
+
+    public function histories(): HasMany
+    {
+        return $this->hasMany(ContentHistory::class)->latest('id');
     }
 }

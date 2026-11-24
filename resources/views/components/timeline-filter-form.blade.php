@@ -1,0 +1,12 @@
+@props(['action', 'filters', 'divisions', 'assignees', 'showStatus' => true])
+<form class="timeline-filters" method="GET" action="{{ $action }}">
+    {{ $slot }}
+    @if($showStatus)
+    <div class="field"><label for="timeline-status">Status konten</label><select id="timeline-status" name="status"><option value="">Semua status</option>@foreach(\App\Models\Content::STATUSES as $value => $label)<option value="{{ $value }}" @selected($filters->get('status') === $value)>{{ $label }}</option>@endforeach</select></div>
+    @endif
+    <div class="field"><label for="timeline-platform">Platform</label><select id="timeline-platform" name="platform"><option value="">Semua platform</option>@foreach(\App\Models\Content::PLATFORMS as $platform)<option value="{{ $platform }}" @selected($filters->get('platform') === $platform)>{{ $platform }}</option>@endforeach</select></div>
+    <div class="field"><label for="timeline-division">Divisi</label><select id="timeline-division" name="division"><option value="">Semua divisi</option>@if(filled($filters->get('division')) && ! $divisions->has(\App\Models\User::divisionKey($filters->get('division'))))<option value="{{ $filters->get('division') }}" selected>{{ $filters->get('division') }}</option>@endif @foreach($divisions as $key => $label)<option value="{{ $label }}" @selected(\App\Models\User::divisionKey($filters->get('division')) === $key)>{{ $label }}</option>@endforeach</select></div>
+    <div class="field"><label for="timeline-assignee">PIC</label><select id="timeline-assignee" name="assignee"><option value="">Semua PIC</option>@if(filled($filters->get('assignee')) && ! $assignees->contains('id', (int) $filters->get('assignee')))<option value="{{ $filters->get('assignee') }}" selected>PIC lain (tidak ada di konten yang bisa kamu lihat)</option>@endif @foreach($assignees as $option)<option value="{{ $option['id'] }}" @selected((int) $filters->get('assignee') === $option['id'])>{{ $option['label'] }}</option>@endforeach</select></div>
+    <div class="field"><label for="timeline-flag">Penanda</label><select id="timeline-flag" name="flag"><option value="">Semua konten</option><option value="overdue" @selected($filters->get('flag') === 'overdue')>Lewat tenggat</option><option value="needs_assignee" @selected($filters->get('flag') === 'needs_assignee')>Butuh PIC</option></select></div>
+    <button class="button button-secondary">Tampilkan</button>
+</form>

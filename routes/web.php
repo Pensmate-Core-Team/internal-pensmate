@@ -7,7 +7,9 @@ use App\Http\Controllers\ContentController;
 use App\Http\Controllers\MemberActivationController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\TimelineBoardController;
 use App\Http\Controllers\TimelineContentController;
+use App\Http\Controllers\TimelineListController;
 use App\Http\Controllers\TimelineController;
 use App\Http\Middleware\EnsureActiveMember;
 use App\Http\Middleware\ProtectActivationResponse;
@@ -25,6 +27,8 @@ Route::middleware(ProtectActivationResponse::class)->group(function () {
 Route::middleware(['auth', EnsureActiveMember::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
     Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline.index');
+    Route::get('/timeline/list', TimelineListController::class)->name('timeline.list');
+    Route::get('/timeline/board', TimelineBoardController::class)->name('timeline.board');
     Route::get('/integrations/timeline/contents', TimelineContentController::class)->name('timeline.contents');
     Route::resource('contents', ContentController::class)->except('destroy');
     Route::post('/contents/{content}/transition', [ContentController::class, 'transition'])->name('contents.transition');
