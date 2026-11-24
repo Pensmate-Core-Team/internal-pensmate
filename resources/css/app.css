@@ -114,6 +114,11 @@
     .status-revision { background: #fff0d6; color: #875713; }
     .status-ready { background: #e1efdf; color: #2b6336; }
     .status-published { background: #e2eeea; color: #31695b; }
+    .flag { @apply inline-flex max-w-full items-center gap-1 rounded-md px-2 py-1 text-xs font-semibold; width: fit-content; white-space: nowrap; }
+    .flag .icon { @apply size-3.5 shrink-0; }
+    .flag-overdue { background: #fbe9e6; color: #a43228; }
+    .flag-needs-assignee { background: #f1eaf7; color: #5e3a80; }
+    .flag-group { @apply inline-flex flex-wrap items-center gap-1.5; }
     .row-person { @apply flex items-center gap-2 text-xs; overflow-wrap: anywhere; }
     .row-date { @apply flex flex-col gap-1 text-xs; font-variant-numeric: tabular-nums; }
     .row-date small { @apply text-xs; color: var(--muted); }

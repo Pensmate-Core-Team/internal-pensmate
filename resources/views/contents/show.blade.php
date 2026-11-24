@@ -7,7 +7,7 @@
 <div class="detail-grid">
 <div class="form-stack">
     <section class="panel">
-        <div class="section-heading"><h2>Materi konten</h2><x-status :status="$content->status"/></div>
+        <div class="section-heading"><h2>Materi konten</h2><span class="flag-group"><x-content-flags :content="$content"/><x-status :status="$content->status"/></span></div>
         @if($content->assets->isNotEmpty())
         <ol class="asset-gallery">
             @foreach($content->assets as $asset)

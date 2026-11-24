@@ -98,6 +98,31 @@ class Content extends Model
         return $this->hasMany(ContentReference::class);
     }
 
+    public function isOverdue(): bool
+    {
+        return $this->scheduled_at !== null && $this->scheduled_at->lt(now()) && $this->status !== 'published';
+    }
+
+    public function needsAssignee(): bool
+    {
+        $assignee = $this->assignee;
+
+        return $this->status !== 'published'
+            && (! $assignee || ! $assignee->is_active || $assignee->trashed() || ! filled($assignee->email));
+    }
+
+    public function scopeOverdue(Builder $query): Builder
+    {
+        return $query->whereNotNull('scheduled_at')->where('scheduled_at', '<', now())->where('status', '<>', 'published');
+    }
+
+    public function scopeNeedingAssignee(Builder $query): Builder
+    {
+        return $query->where('status', '<>', 'published')->whereHas('assignee', fn (Builder $assignee) => $assignee
+            ->where(fn (Builder $unable) => $unable->where('is_active', false)->orWhereNotNull('deleted_at')
+                ->orWhereNull('email')->orWhere('email', '')));
+    }
+
     public function histories(): HasMany
     {
         return $this->hasMany(ContentHistory::class)->latest('id');
