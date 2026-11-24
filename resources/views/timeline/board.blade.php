@@ -6,7 +6,7 @@
     <div><h1>Timeline konten</h1><p>Lihat posisi setiap konten di alur kerja. Ubah status dari halaman detail konten.</p></div>
     <a class="button button-primary" href="{{ route('contents.create') }}"><x-icon name="plus"/>Buat draf</a>
 </div>
-<x-timeline-tabs current="board" :carry="$filters->carry()"/>
+<x-timeline-tabs current="board" :carry="$filters->carry()" :range="$filters->range()"/>
 <x-timeline-filter-form :action="route('timeline.board')" :filters="$filters" :divisions="$divisions" :assignees="$assignees" :show-status="false">
     <div class="field"><label for="timeline-from">Dari tanggal</label><input id="timeline-from" name="from" type="date" value="{{ $filters->get('from') }}"></div>
     <div class="field"><label for="timeline-to">Sampai tanggal</label><input id="timeline-to" name="to" type="date" value="{{ $filters->get('to') }}"></div>
@@ -29,7 +29,7 @@
             @endforeach
         </ol>
         @endif
-        @if($column['more'])<a class="text-link" href="{{ route('timeline.list', [...$filters->carry(), ...array_filter(['from' => $filters->get('from'), 'to' => $filters->get('to')]), 'status' => $column['status']]) }}">{{ $column['limitedToRecent'] ? 'Lihat semua konten terunggah di Daftar' : 'Lihat semua di Daftar' }}<x-icon name="arrow"/></a>@endif
+        @if($column['more'])<a class="text-link" href="{{ route('timeline.list', [...$filters->carry(), ...$filters->range(), 'status' => $column['status']]) }}">{{ $column['limitedToRecent'] ? 'Lihat semua konten terunggah di Daftar' : 'Lihat semua di Daftar' }}<x-icon name="arrow"/></a>@endif
         @if($column['limitedToRecent'])<p class="hint">Menampilkan yang terunggah 30 hari terakhir.</p>@endif
     </section>
     @endforeach

@@ -175,6 +175,26 @@ class TimelineListTest extends TestCase
         $this->assertMatchesRegularExpression('/<option value="'.$stranger->id.'"\s+selected[^>]*>PIC lain \(tidak ada di konten yang bisa kamu lihat\)/', $html);
     }
 
+    public function test_date_range_carries_between_list_and_board_but_not_to_calendar(): void
+    {
+        $this->actingAs($this->actor('admin'));
+        $range = ['from' => '2026-12-01', 'to' => '2026-12-31'];
+
+        $this->get(route('timeline.list', ['platform' => 'TikTok', ...$range, 'sort' => 'status']))->assertOk()
+            ->assertSee('href="'.e(route('timeline.board', ['platform' => 'TikTok', ...$range])).'"', false)
+            ->assertSee('href="'.e(route('timeline.index', ['platform' => 'TikTok'])).'"', false);
+        $this->get(route('timeline.board', $range))->assertOk()
+            ->assertSee('href="'.e(route('timeline.list', $range)).'"', false);
+    }
+
+    public function test_summary_links_keep_the_date_range_they_were_counted_with(): void
+    {
+        $this->actingAs($this->actor('admin'));
+
+        $this->get(route('timeline.list', ['from' => '2026-11-01', 'to' => '2026-11-30']))->assertOk()
+            ->assertSee('href="'.e(route('timeline.list', ['from' => '2026-11-01', 'to' => '2026-11-30', 'flag' => 'overdue'])).'"', false);
+    }
+
     public function test_response_is_private_no_store_and_tab_list_is_current(): void
     {
         $response = $this->actingAs($this->actor())->get(route('timeline.list'))->assertOk();

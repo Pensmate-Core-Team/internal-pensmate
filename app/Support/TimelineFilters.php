@@ -51,6 +51,12 @@ class TimelineFilters
         return array_intersect_key($this->values, array_flip(self::CARRIED));
     }
 
+    /** Filled `from`/`to` values; shared by list and board, which give them the same meaning. */
+    public function range(): array
+    {
+        return array_intersect_key($this->values, array_flip(['from', 'to']));
+    }
+
     public function apply(Builder $query, array $except = []): Builder
     {
         $value = fn (string $key) => in_array($key, $except, true) ? null : $this->get($key);

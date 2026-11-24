@@ -6,7 +6,7 @@
     <div><h1>Timeline konten</h1><p>Semua rencana konten dalam satu daftar, lengkap dengan status, PIC, dan tenggat.</p></div>
     <a class="button button-primary" href="{{ route('contents.create') }}"><x-icon name="plus"/>Buat draf</a>
 </div>
-<x-timeline-tabs current="list" :carry="$filters->carry()"/>
+<x-timeline-tabs current="list" :carry="$filters->carry()" :range="$filters->range()"/>
 <x-timeline-filter-form :action="route('timeline.list')" :filters="$filters" :divisions="$divisions" :assignees="$assignees">
     <div class="field"><label for="timeline-from">Dari tanggal</label><input id="timeline-from" name="from" type="date" value="{{ $filters->get('from') }}"></div>
     <div class="field"><label for="timeline-to">Sampai tanggal</label><input id="timeline-to" name="to" type="date" value="{{ $filters->get('to') }}"></div>
@@ -14,8 +14,8 @@
 </x-timeline-filter-form>
 <ul class="timeline-summary" aria-label="Ringkasan konten">
     <li><span class="summary-count">{{ $summary['total'] }}</span> konten</li>
-    <li><a href="{{ route('timeline.list', [...$filters->carry(), 'flag' => 'overdue']) }}"><span class="summary-count">{{ $summary['overdue'] }}</span> lewat tenggat</a></li>
-    <li><a href="{{ route('timeline.list', [...$filters->carry(), 'flag' => 'needs_assignee']) }}"><span class="summary-count">{{ $summary['needs_assignee'] }}</span> butuh PIC</a></li>
+    <li><a href="{{ route('timeline.list', [...$filters->carry(), ...$filters->range(), 'flag' => 'overdue']) }}"><span class="summary-count">{{ $summary['overdue'] }}</span> lewat tenggat</a></li>
+    <li><a href="{{ route('timeline.list', [...$filters->carry(), ...$filters->range(), 'flag' => 'needs_assignee']) }}"><span class="summary-count">{{ $summary['needs_assignee'] }}</span> butuh PIC</a></li>
 </ul>
 <div class="content-list">
     <div class="list-header"><span>Konten</span><span>Status</span><span>Penanggung jawab</span><span>Jadwal upload</span><span></span></div>
