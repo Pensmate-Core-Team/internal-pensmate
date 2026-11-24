@@ -122,6 +122,28 @@ class TimelineBoardTest extends TestCase
             ->assertSee('Lihat semua di Daftar');
     }
 
+    public function test_see_all_link_keeps_date_range_of_the_column(): void
+    {
+        $admin = $this->actor();
+        foreach (range(1, 51) as $i) {
+            $this->content($admin, 'Konten '.$i, ['scheduled_at' => CarbonImmutable::parse('2026-12-02 00:00:00')->addMinutes($i)]);
+        }
+
+        $this->actingAs($admin)->get(route('timeline.board', ['from' => '2026-12-01', 'to' => '2026-12-31']))->assertOk()
+            ->assertSee('href="'.e(route('timeline.list', ['from' => '2026-12-01', 'to' => '2026-12-31', 'status' => 'draft'])).'"', false);
+    }
+
+    public function test_recent_published_column_link_does_not_promise_the_same_set(): void
+    {
+        $admin = $this->actor();
+        foreach (range(1, 51) as $i) {
+            $this->content($admin, 'Terbit '.$i, ['status' => 'published', 'published_at' => '2026-11-20 09:00:00']);
+        }
+
+        $this->actingAs($admin)->get(route('timeline.board'))->assertOk()
+            ->assertSee('Lihat semua konten terunggah di Daftar')->assertDontSee('Lihat semua di Daftar');
+    }
+
     public function test_cards_sorted_by_schedule_unscheduled_last_and_show_flags_pic_platform(): void
     {
         $admin = $this->actor('admin', ['name' => 'Rani']);

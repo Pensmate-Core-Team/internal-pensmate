@@ -162,6 +162,19 @@ class TimelineListTest extends TestCase
         $this->get(route('timeline.list', ['platform' => 'TikTok']))->assertOk()->assertSee('Tidak ada konten yang cocok');
     }
 
+    public function test_active_filter_outside_options_stays_visible_without_leaking_names(): void
+    {
+        $member = $this->actor();
+        $stranger = $this->actor('member', ['name' => 'Orang Rahasia']);
+        $this->content($member, 'Punyaku');
+
+        $html = $this->actingAs($member)->get(route('timeline.list', ['division' => 'Gudang', 'assignee' => $stranger->id]))
+            ->assertOk()->assertDontSee('Orang Rahasia')->getContent();
+
+        $this->assertMatchesRegularExpression('/<option value="Gudang"\s+selected/', $html);
+        $this->assertMatchesRegularExpression('/<option value="'.$stranger->id.'"\s+selected[^>]*>PIC lain \(tidak ada di konten yang bisa kamu lihat\)/', $html);
+    }
+
     public function test_response_is_private_no_store_and_tab_list_is_current(): void
     {
         $response = $this->actingAs($this->actor())->get(route('timeline.list'))->assertOk();

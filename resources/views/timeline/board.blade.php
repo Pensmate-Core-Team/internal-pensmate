@@ -29,7 +29,7 @@
             @endforeach
         </ol>
         @endif
-        @if($column['more'])<a class="text-link" href="{{ route('timeline.list', [...$filters->carry(), 'status' => $column['status']]) }}">Lihat semua di Daftar<x-icon name="arrow"/></a>@endif
+        @if($column['more'])<a class="text-link" href="{{ route('timeline.list', [...$filters->carry(), ...array_filter(['from' => $filters->get('from'), 'to' => $filters->get('to')]), 'status' => $column['status']]) }}">{{ $column['limitedToRecent'] ? 'Lihat semua konten terunggah di Daftar' : 'Lihat semua di Daftar' }}<x-icon name="arrow"/></a>@endif
         @if($column['limitedToRecent'])<p class="hint">Menampilkan yang terunggah 30 hari terakhir.</p>@endif
     </section>
     @endforeach
