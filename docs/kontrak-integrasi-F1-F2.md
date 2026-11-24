@@ -55,7 +55,7 @@ Semua migrasi F1/F2 memakai timestamp **setelah** `2026_11_19_000003`.
 ### 3.1 Riwayat perubahan konten (F1, PRD K-TL7)
 
 - Tabel baru `content_histories`: `content_id`, `actor_id` (nullable untuk proses sistem), `field` (`status` / `scheduled_at` / `assigned_to`), `old_value`, `new_value`, `note`, `created_at`.
-- Diisi oleh **observer** `ContentHistoryObserver` pada event `updated` milik `Content`, yang didaftarkan dari service provider F1. `TransitionContent` dan `SaveContent` **tidak perlu diubah**.
+- Diisi oleh **observer** `ContentHistoryObserver` pada event `created` (status awal) dan `updated` milik `Content`. Observer didaftarkan dengan satu baris, yaitu atribut `#[ObservedBy]` pada `Content` atau `Content::observe()` di `AppServiceProvider`. `TransitionContent` dan `SaveContent` **tidak perlu diubah**.
 - Pelaku diambil dari user yang sedang login. Catatan revisi diambil dari `review_notes` saat status menjadi `revision`.
 
 ### 3.2 Halaman timeline (F1)
