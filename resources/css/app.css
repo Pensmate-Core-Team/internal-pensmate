@@ -276,8 +276,6 @@
 @media (max-width: 1279px) {
     .timeline-board { grid-template-columns: minmax(0, 1fr); }
     .board-cards { max-height: none; overflow: visible; }
-}
-@media (max-width: 1279px) {
     .timeline-calendar { overflow: visible; border: 0; background: transparent; }
     .timeline-weekdays { display: none; }
     .timeline-days { display: block; }
