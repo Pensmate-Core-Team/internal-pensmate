@@ -198,6 +198,16 @@
     .timeline-summary a { @apply inline-flex min-h-11 items-center gap-1.5 font-medium; color: var(--accent); text-underline-offset: 4px; }
     .timeline-summary a:hover { text-decoration: underline; }
     .summary-count { @apply font-semibold; color: var(--ink); font-variant-numeric: tabular-nums; }
+    .timeline-board { @apply grid gap-4; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .board-column { @apply flex min-w-0 flex-col gap-3 rounded-xl border p-3; background: #fafbf7; border-color: var(--line); }
+    .board-column-heading { @apply flex items-center justify-between gap-2 text-sm; }
+    .board-cards { @apply flex max-h-[70vh] flex-col gap-2 overflow-y-auto; }
+    .board-card { @apply rounded-lg border bg-white p-3; border-color: #edf0e9; }
+    .board-card h3 { @apply text-sm font-semibold leading-snug; overflow-wrap: anywhere; }
+    .board-card h3 a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+    .board-card-date, .board-card-meta { @apply mt-1 text-xs; color: var(--muted); overflow-wrap: anywhere; }
+    .board-card-date { font-variant-numeric: tabular-nums; }
+    .board-empty { @apply py-4 text-center text-xs; color: var(--muted); }
     .timeline-filters .field { @apply mb-0; }
     .timeline-heading { @apply mb-5 flex flex-wrap items-center justify-between gap-4; }
     .timeline-heading h2 { @apply text-xl; }
@@ -263,6 +273,10 @@
 }
 
 @media (min-width: 1600px) { .workspace { padding-top: 48px; } .content-row { min-height: 116px; } }
+@media (max-width: 1279px) {
+    .timeline-board { grid-template-columns: minmax(0, 1fr); }
+    .board-cards { max-height: none; overflow: visible; }
+}
 @media (max-width: 1279px) {
     .timeline-calendar { overflow: visible; border: 0; background: transparent; }
     .timeline-weekdays { display: none; }

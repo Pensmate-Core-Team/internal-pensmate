@@ -28,7 +28,7 @@ Route::middleware(['auth', EnsureActiveMember::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'destroy'])->name('logout');
     Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline.index');
     Route::get('/timeline/list', TimelineListController::class)->name('timeline.list');
-    Route::get('/timeline/board', [TimelineBoardController::class, '__invoke'])->name('timeline.board');
+    Route::get('/timeline/board', TimelineBoardController::class)->name('timeline.board');
     Route::get('/integrations/timeline/contents', TimelineContentController::class)->name('timeline.contents');
     Route::resource('contents', ContentController::class)->except('destroy');
     Route::post('/contents/{content}/transition', [ContentController::class, 'transition'])->name('contents.transition');
