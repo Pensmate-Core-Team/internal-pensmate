@@ -139,6 +139,61 @@ class ContentHistoryTest extends TestCase
         $this->assertFalse(ContentHistory::where('content_id', $content->id)->where('new_value', 'in_review')->exists());
     }
 
+    private function row(Content $content, ?User $actor, string $field, ?string $old, ?string $new, string $at, ?string $note = null): void
+    {
+        ContentHistory::forceCreate(['content_id' => $content->id, 'actor_id' => $actor?->id, 'field' => $field,
+            'old_value' => $old, 'new_value' => $new, 'note' => $note, 'created_at' => $at]);
+    }
+
+    public function test_detail_page_shows_history_newest_first_with_readable_values(): void
+    {
+        $owner = $this->actor('member', 'Media', ['name' => 'Sinta']);
+        $bima = $this->actor('member', 'Media', ['name' => 'Bima']);
+        $content = $this->draft($owner);
+        ContentHistory::query()->delete();
+        $this->row($content, $owner, 'status', 'draft', 'in_review', '2026-11-20 08:00:00');
+        $this->row($content, $owner, 'scheduled_at', '2026-11-20T09:00:00+07:00', '2026-11-21T10:30:00+07:00', '2026-11-21 08:00:00');
+        $this->row($content, $owner, 'assigned_to', (string) $owner->id, (string) $bima->id, '2026-11-22 08:00:00', null);
+
+        $this->actingAs($owner)->get(route('contents.show', $content))->assertOk()
+            ->assertSee('Riwayat perubahan')
+            ->assertSeeInOrder(['mengganti PIC Sinta → Bima', 'mengubah jadwal 20 Nov 2026 09:00 WIB → 21 Nov 2026 10:30 WIB', 'mengubah status Draf → Dalam review'])
+            ->assertSeeText('Sinta mengubah status Draf → Dalam review');
+    }
+
+    public function test_archived_actor_and_assignee_names_still_render(): void
+    {
+        $owner = $this->actor('member', 'Media', ['name' => 'Sinta']);
+        $admin = $this->actor('admin', 'Media', ['name' => 'Rani Admin']);
+        $bima = $this->actor('member', 'Media', ['name' => 'Bima']);
+        $content = $this->draft($owner);
+        $this->row($content, $admin, 'assigned_to', (string) $bima->id, (string) $owner->id, '2026-11-22 08:00:00');
+        $admin->delete();
+        $bima->delete();
+
+        $this->actingAs($owner)->get(route('contents.show', $content))->assertOk()
+            ->assertSeeText('Rani Admin mengganti PIC Bima → Sinta');
+    }
+
+    public function test_history_without_actor_is_labelled_sistem(): void
+    {
+        $owner = $this->actor();
+        $content = $this->draft($owner);
+        $this->row($content, null, 'status', 'draft', 'revision', '2026-11-22 08:00:00', 'Catatan otomatis');
+
+        $this->actingAs($owner)->get(route('contents.show', $content))->assertOk()
+            ->assertSeeText('Sistem mengubah status Draf → Perlu revisi')->assertSee('Catatan otomatis');
+    }
+
+    public function test_empty_history_shows_honest_message(): void
+    {
+        $owner = $this->actor();
+        $content = $this->draft($owner);
+        ContentHistory::query()->delete();
+
+        $this->actingAs($owner)->get(route('contents.show', $content))->assertOk()->assertSee('Belum ada perubahan tercatat');
+    }
+
     public function test_change_without_logged_in_user_has_null_actor(): void
     {
         $owner = $this->actor();

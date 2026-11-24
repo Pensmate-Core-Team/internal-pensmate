@@ -46,7 +46,7 @@ class ContentController extends Controller
     {
         Gate::authorize('view', $content);
 
-        return view('contents.show', ['content' => $content->load('assignee', 'creator', 'reviewer', 'assets', 'reviews.reviewer', 'references.creator')]);
+        return view('contents.show', ['content' => $content->load('assignee', 'creator', 'reviewer', 'assets', 'reviews.reviewer', 'references.creator', 'histories.actor')]);
     }
 
     public function edit(Content $content)
