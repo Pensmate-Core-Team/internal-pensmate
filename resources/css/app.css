@@ -192,7 +192,8 @@
     .notice-success { background: #e3efda; color: #315c31; }
     .notice-error { background: #fae9e4; color: #8b3229; }
     .notice-error ul { @apply mt-2 list-inside list-disc; }
-    .timeline-filters { @apply mb-7 grid items-end gap-4; grid-template-columns: repeat(3, minmax(0, 1fr)) auto; }
+    .timeline-filters { @apply mb-7 grid items-end gap-4; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+    .timeline-tabs { @apply mb-6; }
     .timeline-filters .field { @apply mb-0; }
     .timeline-heading { @apply mb-5 flex flex-wrap items-center justify-between gap-4; }
     .timeline-heading h2 { @apply text-xl; }

@@ -6,12 +6,10 @@
     <div><h1>Timeline konten</h1><p>Jadwal publikasi dan referensi sumber dalam satu tempat.</p></div>
     <a class="button button-primary" href="{{ route('contents.create') }}"><x-icon name="plus"/>Buat draf</a>
 </div>
-<form class="timeline-filters" method="GET" action="{{ route('timeline.index') }}">
+<x-timeline-tabs current="calendar" :carry="$filters->carry()"/>
+<x-timeline-filter-form :action="route('timeline.index')" :filters="$filters" :divisions="$divisions" :assignees="$assignees">
     <div class="field"><label for="timeline-month">Bulan</label><input id="timeline-month" name="month" type="month" value="{{ $month }}" required></div>
-    <div class="field"><label for="timeline-status">Status konten</label><select id="timeline-status" name="status"><option value="">Semua status</option>@foreach(\App\Models\Content::STATUSES as $value => $label)<option value="{{ $value }}" @selected(request('status') === $value)>{{ $label }}</option>@endforeach</select></div>
-    <div class="field"><label for="timeline-platform">Platform</label><select id="timeline-platform" name="platform"><option value="">Semua platform</option>@foreach(\App\Models\Content::PLATFORMS as $platform)<option value="{{ $platform }}" @selected(request('platform') === $platform)>{{ $platform }}</option>@endforeach</select></div>
-    <button class="button button-secondary">Tampilkan</button>
-</form>
+</x-timeline-filter-form>
 <div class="timeline-heading">
     <div><h2 id="timeline-month-heading">{{ $monthLabel }}</h2><p class="hint mt-1">{{ $contents->count() }} konten terjadwal &middot; Waktu Indonesia Barat</p></div>
     <nav class="timeline-navigation" aria-label="Navigasi bulan">
@@ -32,7 +30,7 @@
             <ol class="timeline-events">
                 @foreach($day['contents'] as $content)
                 <li><article id="timeline-content-{{ $content->id }}" class="timeline-event" data-timeline-content="{{ $content->id }}">
-                    <div class="timeline-event-heading"><time datetime="{{ $content->scheduled_at->toIso8601String() }}" title="{{ $content->scheduled_at->format('H:i') }} WIB" aria-label="{{ $content->scheduled_at->format('H:i') }} WIB">{{ $content->scheduled_at->format('H:i') }}</time><x-status :status="$content->status" compact/></div>
+                    <div class="timeline-event-heading"><time datetime="{{ $content->scheduled_at->toIso8601String() }}" title="{{ $content->scheduled_at->format('H:i') }} WIB" aria-label="{{ $content->scheduled_at->format('H:i') }} WIB">{{ $content->scheduled_at->format('H:i') }}</time><span class="flag-group"><x-content-flags :content="$content" compact/><x-status :status="$content->status" compact/></span></div>
                     <h4><a href="{{ route('contents.show', $content) }}" title="{{ $content->title }}">{{ $content->title }}</a></h4>
                     <p class="timeline-event-meta" title="{{ $content->platform }} / {{ $content->assignee->name }}">{{ $content->platform }} &middot; {{ $content->assignee->name }}</p>
                     <x-timeline-references :content="$content"/>
