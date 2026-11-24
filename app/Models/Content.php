@@ -98,6 +98,21 @@ class Content extends Model
         return $this->hasMany(ContentReference::class);
     }
 
+    /** Timeline orderings: schedule (unscheduled last), reverse schedule, or workflow status. */
+    public const TIMELINE_SORTS = ['scheduled' => 'Jadwal terdekat', '-scheduled' => 'Jadwal terjauh', 'status' => 'Status'];
+
+    public function scopeTimelineOrder(Builder $query, string $sort = 'scheduled'): Builder
+    {
+        if ($sort === 'status') {
+            $statuses = array_keys(self::STATUSES);
+            $cases = implode(' ', array_map(fn ($i) => "WHEN ? THEN {$i}", array_keys($statuses)));
+            $query->orderByRaw("CASE status {$cases} ELSE ".count($statuses).' END', $statuses);
+        }
+
+        return $query->orderByRaw('scheduled_at IS NULL')
+            ->orderBy('scheduled_at', $sort === '-scheduled' ? 'desc' : 'asc')->orderBy('id');
+    }
+
     public function isOverdue(): bool
     {
         return $this->scheduled_at !== null && $this->scheduled_at->lt(now()) && $this->status !== 'published';

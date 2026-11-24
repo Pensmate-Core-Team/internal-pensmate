@@ -23,7 +23,7 @@ class TimelineBoardController extends Controller
                 ->when($limitedToRecent, fn ($q) => $q->where('published_at', '>=', now()->subDays(self::RECENT_DAYS)));
             $total = $query()->count();
             $columns[] = ['status' => $status, 'label' => $label, 'total' => $total,
-                'items' => TimelineListController::sorted($query(), 'scheduled')->with('assignee')->withCount('references')
+                'items' => $query()->timelineOrder()->with('assignee')->withCount('references')
                     ->take(self::COLUMN_LIMIT)->get(),
                 'more' => $total > self::COLUMN_LIMIT, 'limitedToRecent' => $limitedToRecent];
         }

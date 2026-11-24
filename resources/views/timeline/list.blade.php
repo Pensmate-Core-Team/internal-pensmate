@@ -10,7 +10,7 @@
 <x-timeline-filter-form :action="route('timeline.list')" :filters="$filters" :divisions="$divisions" :assignees="$assignees">
     <div class="field"><label for="timeline-from">Dari tanggal</label><input id="timeline-from" name="from" type="date" value="{{ $filters->get('from') }}"></div>
     <div class="field"><label for="timeline-to">Sampai tanggal</label><input id="timeline-to" name="to" type="date" value="{{ $filters->get('to') }}"></div>
-    <div class="field"><label for="timeline-sort">Urutkan</label><select id="timeline-sort" name="sort">@foreach(\App\Http\Controllers\TimelineListController::SORTS as $value => $label)<option value="{{ $value }}" @selected($sort === $value)>{{ $label }}</option>@endforeach</select></div>
+    <div class="field"><label for="timeline-sort">Urutkan</label><select id="timeline-sort" name="sort">@foreach(\App\Models\Content::TIMELINE_SORTS as $value => $label)<option value="{{ $value }}" @selected($sort === $value)>{{ $label }}</option>@endforeach</select></div>
 </x-timeline-filter-form>
 <ul class="timeline-summary" aria-label="Ringkasan konten">
     <li><span class="summary-count">{{ $summary['total'] }}</span> konten</li>
