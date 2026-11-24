@@ -194,6 +194,10 @@
     .notice-error ul { @apply mt-2 list-inside list-disc; }
     .timeline-filters { @apply mb-7 grid items-end gap-4; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
     .timeline-tabs { @apply mb-6; }
+    .timeline-summary { @apply mb-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm; color: var(--muted); }
+    .timeline-summary a { @apply inline-flex min-h-11 items-center gap-1.5 font-medium; color: var(--accent); text-underline-offset: 4px; }
+    .timeline-summary a:hover { text-decoration: underline; }
+    .summary-count { @apply font-semibold; color: var(--ink); font-variant-numeric: tabular-nums; }
     .timeline-filters .field { @apply mb-0; }
     .timeline-heading { @apply mb-5 flex flex-wrap items-center justify-between gap-4; }
     .timeline-heading h2 { @apply text-xl; }

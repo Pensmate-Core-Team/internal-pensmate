@@ -18,7 +18,7 @@ class TimelineFilters
 
     private function __construct(private readonly array $values) {}
 
-    public static function fromRequest(Request $request, bool $withRange): self
+    public static function fromRequest(Request $request, bool $withRange, array $extraRules = []): self
     {
         $rules = [
             'status' => ['nullable', Rule::in(array_keys(Content::STATUSES))],
@@ -32,7 +32,7 @@ class TimelineFilters
             $rules['to'] = ['nullable', 'date_format:Y-m-d', 'after_or_equal:from'];
         }
 
-        return new self(array_filter($request->validate($rules), fn ($value) => filled($value)));
+        return new self(array_filter($request->validate([...$rules, ...$extraRules]), fn ($value) => filled($value)));
     }
 
     public function get(string $key): mixed
