@@ -175,6 +175,23 @@ class ContentHistoryTest extends TestCase
             ->assertSeeText('Rani Admin mengganti PIC Bima → Sinta');
     }
 
+    public function test_pic_change_names_are_loaded_in_one_query(): void
+    {
+        $owner = $this->actor('member', 'Media', ['name' => 'Sinta']);
+        $content = $this->draft($owner);
+        foreach (range(1, 6) as $i) {
+            $pic = $this->actor('member', 'Media', ['name' => 'PIC '.$i]);
+            $this->row($content, $owner, 'assigned_to', (string) $owner->id, (string) $pic->id, '2026-11-22 08:0'.$i.':00');
+        }
+
+        DB::enableQueryLog();
+        $this->actingAs($owner)->get(route('contents.show', $content))->assertOk()->assertSeeText('mengganti PIC Sinta → PIC 6');
+        $perRowLookups = collect(DB::getQueryLog())->filter(fn ($query) => str_contains($query['query'], 'from "users"')
+            && str_contains($query['query'], '= ? limit 1'));
+
+        $this->assertCount(0, $perRowLookups, 'Nama PIC di riwayat harus dimuat sekaligus, bukan per baris.');
+    }
+
     public function test_history_without_actor_is_labelled_sistem(): void
     {
         $owner = $this->actor();
